@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "table.h"
+#include "utils.h"
 
 unsigned hash(char *s, nlist *hashtab[]){
     unsigned hashval;
