@@ -2,26 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "main/assembler.h"
 #include "lib/utils.h"
-#define MAXLINE 81
 
 static nlist *macrotab[HASHSIZE];
 int pre_assemble(FILE *f, FILE *write);
 void getword(char word[], char line[]);
-
-int main(int argc, char *argv[]){
-
-    int i;
-    FILE *f, *write;
-    if(argc < 2){
-        fprintf(stderr, "pre-assembler error: no given files");
-    }
-    for(i=1; i<argc; i++){
-        f = fopen(argv[i],"r"), write = fopen(strcat(argv[i],"-PP"),"w");
-        pre_assemble(f, write);
-    }
-    
-}
 
 int pre_assemble(FILE *f, FILE *write){
     char line[MAXLINE], word[MAXLINE], macroName[MAXLINE], *macroContent = (char *) malloc(0);
@@ -32,6 +18,7 @@ int pre_assemble(FILE *f, FILE *write){
         getword(word, line);
         if((np = lookup(word,macrotab))){ /*if first word is a macro name*/
             fwrite(np->defn, sizeof(char), sizeof(*np->defn), write);
+            continue;
         }
         hashed = hash(word, macrotab);
         getword(macroName, line);
@@ -45,16 +32,16 @@ int pre_assemble(FILE *f, FILE *write){
                         line_count++;
                         realloc(macroContent, MAXLINE * line_count);
                         strcat(macroContent, line);
+                        continue;
                     }
-                    /*TODO: remove mcroend from file*/
                     install(macroName, macroContent, macrotab); /*add the macro to macrotab*/
                     mcro = 0;
-                    continue;
+                    break;
                 } 
                 continue;
             }
             fprintf(stderr, "macro %s already defined", word);
-            mcro = 0;
+            return 0;
         }
         fwrite(line, sizeof(char), sizeof(line), write);
     }
