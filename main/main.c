@@ -16,5 +16,6 @@ int main(int argc, char *argv[]){
         }
         /*TODO: once we implement next passes call them*/
     }
+    return 0;
 
 }
