@@ -24,7 +24,7 @@ int pre_assemble(FILE *f, FILE *write){
         hashed = hash(word, macrotab); /*hash the word in macrotab*/
         if(hashed == hash("mcro", macrotab)){ /*if first word is a macro decleration*/
             getword(macroName, line); /*place the next word in macroName*/
-            if(iscommand(macroName)){
+            if(gettype(macroName, *tmp)){
                 fprintf(stderr, "a macro cannot have the same name as a command");
                 return 0;
             }

@@ -9,3 +9,4 @@ typedef struct {
 unsigned hash(char *s, nlist *hashtab[]);
 nlist *lookup(char *s, nlist *hashtab[]);
 nlist *install(char *name, char *defn, nlist *hashtab[]);
+int gettype(char *s, char *t);
