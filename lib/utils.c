@@ -17,5 +17,6 @@ int gettype(char *s, char *t){
             return 1;
         }
     }
+    ggkhk
     return 0;
 }
